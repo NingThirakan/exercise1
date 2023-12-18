@@ -1,6 +1,6 @@
 import * as readline from 'readline';
 
-const regex = /^[\a]$/
+const regex = /[a-zA-z]/
 let times = 0
 let inputAnswer = ''
 let countTotal = 0
