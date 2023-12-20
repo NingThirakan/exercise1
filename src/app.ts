@@ -1,4 +1,4 @@
-import * as readline from 'readline';
+import { createInterface } from 'readline'
 
 const regex = /[a-zA-z]/
 let times = 0
@@ -44,7 +44,7 @@ const checkCorrect = (answers: string[], input: string[]) => {
   console.table(value, ['Answer', 'Input String', 'Count Total', 'Count Position', 'Position', 'Times'])
 }
 
-const readLine = readline.createInterface({
+const readLine = createInterface({
   input: process.stdin,
   output: process.stdout,
 });
