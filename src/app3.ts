@@ -11,7 +11,7 @@ const generateZero = (value: number) => {
 }
 
 const findValue = (value: number, zero: string = ''): string => {
-  let result = '';
+  let result = ''
 
   while (value > 0) {
     const numeral = value >= 9
@@ -20,14 +20,14 @@ const findValue = (value: number, zero: string = ''): string => {
         ? '5'
         : value === 4
           ? '4'
-          : '1';
+          : '1'
 
-    result += RomanNumber[`${numeral}${zero}`];
-    value -= parseInt(numeral);
+    result += RomanNumber[`${numeral}${zero}`]
+    value -= parseInt(numeral)
   }
 
-  return result;
-};
+  return result
+}
 
 
 const convertNumber = (number: number) => {
@@ -38,14 +38,14 @@ const convertNumber = (number: number) => {
       number >= 1000 ? 1000 :
         number >= 100 ? 100 :
           number >= 10 ? 10 :
-            1;
+            1
 
-    const value = Math.floor(number / divisor);
-    result += findValue(value, generateZero(number));
-    number %= divisor;
+    const value = Math.floor(number / divisor)
+    result += findValue(value, generateZero(number))
+    number %= divisor
 
     if (divisor === 1) {
-      break;
+      break
     }
   }
 
@@ -60,14 +60,14 @@ const getInput = () => {
 
   readLine.question('Enter your number (number is 1 to 3,000): ', (input) => {
     if (input === 'e') {
-      readLine.close();
+      readLine.close()
     } else if (/\d/.exec(input) && Number(input) > 0 && Number(input) <= 3000) {
       convertNumber(Number(input))
     } else {
       console.log(input)
       getInput()
     }
-  });
+  })
 }
 
 getInput()
