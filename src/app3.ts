@@ -1,95 +1,51 @@
 import { createInterface } from 'readline'
 import { RomanNumber } from './constants/romanNumber';
 
-
 const readLine = createInterface({
   input: process.stdin,
   output: process.stdout,
 });
 
-const generateZero = (number: number) => {
-  let zero = ''
-
-  for (let i = 0; i < number; i++) {
-    zero = zero + '0'
-  }
-
-  return zero
+const generateZero = (value: number) => {
+  return '0'.repeat(String(value).length - 1)
 }
 
-const convertNumber = (inputNum: string) => {
-  let number = Number(inputNum)
+const findValue = (value: number, zero: string = ''): string => {
+  let result = '';
+
+  while (value > 0) {
+    const numeral = value >= 9
+      ? '9'
+      : value >= 5
+        ? '5'
+        : value === 4
+          ? '4'
+          : '1';
+
+    result += RomanNumber[`${numeral}${zero}`];
+    value -= parseInt(numeral);
+  }
+
+  return result;
+};
+
+
+const convertNumber = (number: number) => {
   let result = ''
 
   while (number > 0) {
-    if (number >= 1000 && number <= 3000) {
-      let value = Number(String(number)[0] + generateZero(String(number).length - 1))
-      const match = String(value).match(Object.keys(RomanNumber).join('|'))
+    const divisor =
+      number >= 1000 ? 1000 :
+        number >= 100 ? 100 :
+          number >= 10 ? 10 :
+            1;
 
-      if (match) {
-        result = result + RomanNumber[value]
-      } else {
-        while (value > 0) {
-          result = result + RomanNumber[1000]
-          value = value - 1000
-        }
-      }
-      number = number % 1000
+    const value = Math.floor(number / divisor);
+    result += findValue(value, generateZero(number));
+    number %= divisor;
 
-    } else if (number >= 100 && number < 1000) {
-      let value = Number(String(number)[0] + generateZero(String(number).length - 1))
-      const match = String(value).match(Object.keys(RomanNumber).join('|'))
-
-      if (match) {
-        result = result + RomanNumber[value]
-      } else {
-        while (value > 0) {
-          if (value >= 500 && value < 1000) {
-            result = RomanNumber[500]
-            value = value - 500
-          } else {
-            result = result + RomanNumber[100]
-            value = value - 100
-          }
-        }
-      }
-      number = number % 100
-
-    } else if (number >= 10 && number < 100) {
-      let value = Number(String(number)[0] + generateZero(String(number).length - 1))
-      const match = String(value).match(Object.keys(RomanNumber).join('|'))
-
-      if (match) {
-        result = result + RomanNumber[value]
-      } else {
-        while (value > 0) {
-          if (value >= 50 && value < 100) {
-            result = RomanNumber[50]
-            value = value - 50
-          } else {
-            result = result + RomanNumber[10]
-            value = value - 10
-          }
-        }
-      }
-      number = number % 10
-
-    } else if (number < 10) {
-      const match = String(number).match(Object.keys(RomanNumber).join('|'))
-      if (match) {
-        result = result + RomanNumber[number]
-      } else {
-        while (number > 0) {
-          if (number >= 5) {
-            result = result + RomanNumber[5]
-            number = number - 5
-          } else {
-            result = result + RomanNumber[1]
-            number = number - 1
-          }
-        }
-      }
-      break
+    if (divisor === 1) {
+      break;
     }
   }
 
@@ -99,7 +55,6 @@ const convertNumber = (inputNum: string) => {
 }
 
 
-
 const getInput = () => {
   console.log("If you want to exit, please press 'e'")
 
@@ -107,7 +62,7 @@ const getInput = () => {
     if (input === 'e') {
       readLine.close();
     } else if (/\d/.exec(input) && Number(input) > 0 && Number(input) <= 3000) {
-      convertNumber(input)
+      convertNumber(Number(input))
     } else {
       console.log(input)
       getInput()
